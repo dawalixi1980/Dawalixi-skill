@@ -1,14 +1,14 @@
 ---
-name: llm-wiki-user-0198a267
+name: llm-wiki-skill
 description: "用 LLM 增量构建和维护个人知识库 Wiki，取代每次查询都做 RAG 检索的模式，用 LLM 持续编译、交叉引用和维护持久化的结构化 Wiki。"
 description_zh: "用 LLM 增量构建和维护个人知识库 Wiki"
 description_en: "Build a persistent personal wiki with LLM-maintained knowledge"
 homepage: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
 allowed-tools: Read,Write,Bash,Grep,Glob
-display_name: "llm wiki"
-display_name_en: "llm wiki"
+display_name: "llm wiki skill"
+display_name_en: "llm wiki skill"
 visibility: "public"
-slug: "llm-wiki-user-0198a267"
+slug: "llm-wiki-skill"
 version: "1.1.0"
 displayName: "llm wiki（个人知识库）"
 summary: "用 LLM 增量构建和维护个人知识库 Wiki"
