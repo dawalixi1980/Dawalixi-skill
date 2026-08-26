@@ -1,5 +1,5 @@
 ---
-name: pandoc转换
+name: pandoc-skill
 description: |
   将 Markdown 文件转换为格式规范的 Word 文档 (.docx)，基于内置 pandoc-A3.docx 模板渲染。
   自动清洗标题中的编号前缀（如 1. / 1.1 / 一、等），仅保留 # 语法标识的纯文本标题。
@@ -14,7 +14,7 @@ agent_created: true
 ## 技能结构
 
 ```
-pandoc-convert/
+pandoc-skill/
 ├── SKILL.md           ← 本文件
 └── pandoc-A3.docx     ← A3 Word 模板（已嵌入）
 ```
