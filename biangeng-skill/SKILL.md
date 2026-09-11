@@ -45,8 +45,9 @@ description: 生成公路工程「工程变更」全套7张表（工程变更意
 python scripts/dump_tables.py "施工图预算.pdf"  out_原设计.txt
 python scripts/dump_tables.py "结算.xlsx"       out_结算.txt
 ```
-提取严格按 **`references/table-extraction-prompt.md`**（三步法：先识别→按需加载规则→最后校验）
-与 `references/extraction_rules.md` 执行。**先读这两个文件再动手。**
+提取方法参考 **`references/table-extraction-prompt.md`**（三步法：先识别→按需加载规则→最后校验）
+与 `references/extraction_rules.md`。**只采纳其提取方法**；输出表头、单价列数、是否含第三/四部分等
+**一律以本 SKILL.md 与 `extraction_rules.md` 为准**（该文件不是最终输出规范）。**先读这两个文件再动手。**
 - 原设计：施工图预算（含「项目清单预算表 / 建筑安装工程费计算表」等），取各分部与细目**单价、数量、金额**。
 - 变更后：结算（含「总预算表 / 建筑安装工程费计算表」等）。
 
