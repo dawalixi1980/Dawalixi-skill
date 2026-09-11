@@ -45,6 +45,8 @@ description: 生成公路工程「工程变更」全套7张表（工程变更意
 python scripts/dump_tables.py "施工图预算.pdf"  out_原设计.txt
 python scripts/dump_tables.py "结算.xlsx"       out_结算.txt
 ```
+提取严格按 **`references/table-extraction-prompt.md`**（三步法：先识别→按需加载规则→最后校验）
+与 `references/extraction_rules.md` 执行。**先读这两个文件再动手。**
 - 原设计：施工图预算（含「项目清单预算表 / 建筑安装工程费计算表」等），取各分部与细目**单价、数量、金额**。
 - 变更后：结算（含「总预算表 / 建筑安装工程费计算表」等）。
 
@@ -89,7 +91,8 @@ python scripts/build_change_form.py config.json
 - `scripts/build_change_form.py`：JSON 驱动生成器。
 - `scripts/dump_tables.py`：读取 xls/xlsx/pdf 表格。
 - `references/config_schema.md`：config.json 字段说明。
-- `references/extraction_rules.md`：提取原则与分部规则。
+- `references/extraction_rules.md`：提取原则（四条铁律、规则1-11、变更表补充）。
+- `references/table-extraction-prompt.md`：原《表格提取提示词》全文（三步法母本）。
 - `references/example-y198.json`：完整示例（阳春市圭岗镇 Y198 线单改双工程）。
 
 ## 常见陷阱
