@@ -128,6 +128,15 @@ Older binary without `--json`: bare `zlib history` opens an interactive browser 
 
 Shows the daily download quota. `--json` prints `{"daily_amount":n,"daily_allowed":n,"daily_remaining":n,"daily_reset":"…"}`; without it, a styled card. Also doubles as the login check in preflight.
 
+### Domains & mirrors — `zlib doctor`
+
+The CLI accepts only an **allowlisted set of mirror suffixes** (hardcoded in `domain_policy.go`; v0.0.8 allowlist: `1lib.sk`, `article.sk`, `articles.sk`, `z-lib.fm`, `z-lib.gd`, `z-lib.gl`, `z-lib.sk`, `z-library.ec`, `zlib.bz`, `zliba.ru`). Any other host fails with `domain "…" is not in the allowed Z-Library suffix list`, and there is **no env var or flag to add one** — only rebuilding the binary can.
+
+- Probe candidates without logging in or changing the active domain: `zlib doctor` (add `--eapi` to test `/eapi/info/domains`, `--json` for machine output, `--proxy` to override `ZLIB_PROXY` for this check only). A `healthy` or `challenged` result means usable.
+- Set the winner in `~/.config/zlib/.env` as `ZLIB_DOMAIN=https://<host>`, or pass `--domain https://<host>` to `zlib login`.
+- **Portal / entry pages are not mirrors.** Sites like `https://zlibrary.me` only list the current entry links; they answer `404` on `/login` and `/eapi/*`, so they cannot be used as `ZLIB_DOMAIN`. Use them at most to discover the latest real host, then verify it with `zlib doctor`.
+- Windows env file: `%USERPROFILE%\.config\zlib\.env`.
+
 ### Kindle delivery → the `/zlib:kindle` skill
 
 Sending a downloaded file to Kindle (and the SMTP/Amazon setup it needs) lives in a separate skill, `zlib:kindle`. When the user wants a book on their Kindle, hand off to it rather than documenting SMTP here. `zlib download --send-to-kindle` also delivers in one step once Kindle is configured.
