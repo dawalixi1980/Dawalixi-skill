@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+if [ -z "${PYTHON_BIN:-}" ]; then
+  if [ -x "$REPO_ROOT/.venv/bin/python" ]; then
+    PYTHON_BIN="$REPO_ROOT/.venv/bin/python"
+  elif [ -x "$REPO_ROOT/.venv/Scripts/python.exe" ]; then
+    PYTHON_BIN="$REPO_ROOT/.venv/Scripts/python.exe"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
+
+# The packaged runtime (packages/cadgen/src/cadgen/_runtime) is BUILT, never committed,
+# so a fresh checkout has none of it -- and the snapshot suites drive the browser bundle
+# while the policy suite reads the emitted Node builders. Building it is idempotent and
+# fast once the pinned esbuild toolchain is in tmp/, but it is not free, so this only runs
+# when an output is actually missing.
+#
+# The two stages are asked for by name rather than going through bundle.sh: the tests read
+# exactly these, and the viewer stage is a vite build of apps/viewer that needs that app's
+# node_modules -- which a Python-only checkout has no reason to install.
+ensure_packaged_runtime() {
+  local runtime="$REPO_ROOT/packages/cadgen/src/cadgen/_runtime"
+  local name
+  for name in node/dxf-mesh.mjs node/mesh-export.mjs browser/snapshot-render.js browser/render.html; do
+    if [ ! -f "$runtime/$name" ]; then
+      section "Building cadgen's packaged runtime (missing $name)"
+      "$REPO_ROOT/scripts/bundle/cadgen-runtime.sh" --node --browser
+      return
+    fi
+  done
+}
+
+section() {
+  # A log line, not a result: --print-weights writes the per-file costs to stdout.
+  printf '\n==> %s\n' "$1" >&2
+}
+
+run_python_unittest() {
+  local name="$1"
+  local start_dir="$2"
+  shift 2
+  local test_files=()
+  local python_path="$REPO_ROOT:$REPO_ROOT/$start_dir"
+  local path_entry
+
+  section "$name"
+
+  while IFS= read -r test_file; do
+    test_files+=("$test_file")
+  done < <(find "$REPO_ROOT/$start_dir" -name 'test*.py' -print | sort)
+
+  if [ "${#test_files[@]}" -eq 0 ]; then
+    echo "No Python tests found under $start_dir" >&2
+    return 1
+  fi
+
+  for path_entry in "$@"; do
+    if [[ "$path_entry" = /* ]]; then
+      python_path="$python_path:$path_entry"
+    else
+      python_path="$python_path:$REPO_ROOT/$path_entry"
+    fi
+  done
+
+  # Not `-m unittest "${test_files[@]}"`: that names a failed import after the last
+  # dotted component only, so the several test_cli.py files here all fail as
+  # `_FailedTest.test_cli`. unittest_files.py loads each file under its full dotted
+  # path relative to the repo root and names an import failure by that path + file.
+  #
+  # Each test FILE runs in its own interpreter with its own fresh store, CADGEN_TEST_JOBS
+  # at a time (default: the machine's cores). Modules cannot see one another's builds,
+  # and a module that spawns workers or a daemon does not hold the rest of the suite.
+  # PYTHON_TEST_PRINT_WEIGHTS is how --print-weights reaches the runner without every
+  # caller growing a flag.
+  local extra=()
+  if [ -n "${PYTHON_TEST_PRINT_WEIGHTS:-}" ]; then
+    extra+=(--print-weights)
+  fi
+
+  PYTHONPATH="$python_path${PYTHONPATH:+:$PYTHONPATH}" \
+    "$PYTHON_BIN" "$SCRIPT_DIR/unittest_files.py" --top "$REPO_ROOT" \
+      --jobs "${CADGEN_TEST_JOBS:-$(test_jobs)}" ${extra[@]+"${extra[@]}"} "${test_files[@]}"
+}
+
+test_jobs() {
+  # The core count, portably; one job when it cannot be read.
+  "$PYTHON_BIN" -c 'import os; print(os.cpu_count() or 1)' 2>/dev/null || echo 1
+}
