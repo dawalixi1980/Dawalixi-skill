@@ -22,7 +22,7 @@ python <skill-dir>/scripts/init-wiki.py --path <项目目录> --domain "<领域�
 1. **判断母知识来源**（细节见 SKILL.md「母知识来源」）
    - **上传**（对话中拖入/粘贴的文件）→ 先归档到 `raw/`，再读取。
    - **本地**（项目/工作区/仓库里的文件）→ 直接读取，并登记 `raw/`。
-   - **IMA 向量库** → 用 ima-skill 的 `search_knowledge` 向量检索识别，仅在 `raw/源文件清单.md` 登记，**不下载**。
+   - **乐享知识库** → 用 lexiang-search 的 `search_kb_search` / `search_kb_embedding_search` 检索识别，仅在 `raw/源文件清单.md` 登记，**不下载**。
    - 三种来源都登记到 `raw/源文件清单.md`，保持母知识可追溯。
 2. **定位挂载点**：这份资料回答哪些问题？对应骨架 ⟨…⟩ 的哪个要素 / 地基的哪种运算？
 3. **提炼一体单元**：提取「问题 → 符号 → 一体知识点」写入 `wiki/<分类>/<要素>/index.md`（模板见 unit-template.md）。
@@ -48,6 +48,9 @@ python <skill-dir>/scripts/init-wiki.py --path <项目目录> --domain "<领域�
 - 第 1 遍 → 每个要素一个 `wiki/<分类>/<要素>/index.md` + ≥1 个一体单元；
 - 结束 → 鼓励用户重绘连结图，重绘图存入该页 `img/`（可选）。
 
+> **交互交付层**：讲授默认可用**对话式教学**推进（讲→问→答→判→沉淀，一轮一个单元）。
+> 协议见 [dialogue-mode.md](dialogue-mode.md)；用户说"用对话学 / 一问一答学"时走 G。
+
 ## D. 第 2 遍自测（下山）与缺口
 
 1. 合上骨架页的连结图，**只看顶层领域公式**。
@@ -70,6 +73,22 @@ python <skill-dir>/scripts/init-wiki.py --path <项目目录> --domain "<领域�
 - **检查图片**：每个 `raw/images/*` 都有同 slug 的 `media/*.md` 图文卡；页面嵌入图都带图注与来源。
 - `grep "^## \[" log.md | tail -5` 追踪摄入历史。
 
+## G. 对话式教学（Dialogue Mode）
+
+用户说"用对话学 / 一问一答 / 边聊边学"时启用。**完整协议见 [dialogue-mode.md](dialogue-mode.md)。**
+
+核心：**讲 → 问 → 答 → 判 → 沉淀** 五拍循环，**一轮只讲一个一体单元**，每轮落库。
+
+1. 先确认骨架已就位（无则转「立骨架对话」，第 0/0.5 遍也可对话化）。
+2. 声明本轮目标 `<要素 · Q编号>`；用**地基语言**讲机制，再讲语义，符号出图。
+3. 抛**机制型 / 穿针**问题，**等用户作答**；按 对/半对/错 分级追问（先提示后答案）。
+4. 判定后回写：单元 → 要素页；状态 → `01-问题索引.md`；错 → `02-缺口账本.md`；现实 → `应用/钉子表.md`。
+5. 每轮追加 `log.md`：`## [YYYY-MM-DD] 对话 | <要素>·Q<n>`。
+6. 每完成一个要素，让用户**关书复述**连结关系图，并鼓励重绘存 `img/`。
+
+**四模式**：立骨架 / 微课（单单元）/ 串讲（整个要素）/ 复盘（自测·复习）。
+**安全网**：Wiki 是唯一事实源；以问题索引 `[x]` 与缺口账本为客观锚，不为"聊得爽"牺牲沉淀。
+
 ## 渲染规范（math-render / math-skill）
 
 **图片跟随知识点**：生成图放进该知识点的 `wiki/<分类>/<要素>/img/`，骨架图放 `wiki/00-骨架/img/`。
@@ -90,10 +109,10 @@ python <math-skill>/scripts/render_plot.py spec.json \
 
 ## 资料源模式细节
 
-### IMA 向量库模式
-1. 先加载 ima-skill，校验凭证。
-2. `search_knowledge_base`（query 传空）盘点知识库，定位目标库。
-3. `search_knowledge` 多主题语义检索，读 `title`/`highlight_content` 判断重点。
-4. `get_knowledge_list` 按文件夹浏览，确保无遗漏。
+### 乐享知识库模式
+1. 先加载 lexiang-search（未配置则用 lexiang-setup），校验连接。
+2. `space_list_spaces` / `team_list_teams` 盘点团队与知识库，定位目标库（`space_describe_space` 取 `root_entry_id`）。
+3. `search_kb_search` 关键词检索、`search_kb_embedding_search` 语义检索（关键词传 `filters.keyword`）。
+4. `entry_list_children` 按目录浏览，确保无遗漏。
 5. 仅在 `raw/源文件清单.md` 登记，**绝不下源文件**。
-6. 需要原文时用 `get_media_info` 获取 URL 按需读取。
+6. 需要正文时用 `entry_describe_ai_parse_content` 按需读取。
