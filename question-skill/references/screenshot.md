@@ -1,6 +1,7 @@
-# 截图四件套与图文卡
+# 截图归档（放 `raw/`）
 
-> 截图是**一等资料**，但**图片不可 grep** → 每张截图必须配一层"文字层"图文卡，才能被检索、被引用、被追问。
+> 截图是**一等资料**，但**图片不可 grep** → 每张截图在 `raw/` 里配一层"文字层"，才能被检索、引用、追问。
+> **原图与文字层都放 `raw/`**，不另开 media 目录。
 
 ## 一、四件套（多模态读图）
 
@@ -15,24 +16,25 @@
 
 | 类型 | 路径 | 说明 |
 |---|---|---|
-| 截图原图 | `raw/images/YYYYMMDD-<slug>.<ext>` | **只读、不可变** |
-| 图文卡 | `media/<slug>.md` | OCR + 公式 + 描述 + 洞察 |
-| 复现的公式图 | `wiki/<章>/img/<名>.png` | 跟知识点走 |
+| 截图原图 | `raw/YYYYMMDD-<slug>.<ext>` | **只读、不可变** |
+| 截图文字层 | `raw/YYYYMMDD-<slug>.md` | 与图同放，可检索 |
+| 复现的公式图 | `wiki/<章>/<知识点>/img/<名>.png` | 跟知识点走 |
 
-## 三、图文卡模板
+## 三、文字层模板
 
 ```markdown
 ---
 title: <一句话标题>
 slug: <slug>
-source_image: raw/images/YYYYMMDD-<slug>.png
+source_image: raw/YYYYMMDD-<slug>.png
 created: YYYY-MM-DD
+出处: 《书名》· 第 X 章
 tags: [...]
 ---
 
 # <标题>
 
-![原图](../raw/images/<file>)
+![原图](./YYYYMMDD-<slug>.png)
 
 ## OCR
 <图中文字>
@@ -47,12 +49,12 @@ $...$
 <核心点，与所提问题的关系>
 
 ## 复现
-![复现图](../wiki/<章>/img/<名>.png)　·　来源：math-render
+![复现图](../../wiki/<章>/<知识点>/img/<名>.png)　·　来源：math-render
 ```
 
 ## 四、检查清单
 
-- [ ] 截图已进 `raw/images/` 且**未修改**
-- [ ] 有同 slug 的 `media/<slug>.md` 图文卡
+- [ ] 截图原图已进 `raw/` 且**未修改**
+- [ ] 有同 slug 的文字层 `raw/<slug>.md`
 - [ ] 图中的**公式已转 LaTeX** 并用 math-render 复现（校验没错）
-- [ ] 图文卡被答疑单元引用（相对路径）
+- [ ] 文字层被答疑单元引用（相对路径）
