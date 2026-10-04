@@ -101,5 +101,5 @@ description: 提问式答疑技能（QuestionSkill）。当用户在看书/读�
 | [references/grounding.md](references/grounding.md) | 工程/物理佐证规范（土木/计算机优先） |
 | [references/answer-template.md](references/answer-template.md) | 回答卡片模板 |
 | [references/citation.md](references/citation.md) | 乐享检索 + 出处 + 冲突 + 降级 + 下载归档 |
-| [references/archiving.md](references/archiving.md) | 目录架构 + index 三卡 + 归类规则 |
+| [references/archiving.md](references/archiving.md) | 3 点 + 书目导航 + 文件分类 |
 | [references/screenshot.md](references/screenshot.md) | 截图归档（放 raw/，原图＋文字层） |
