@@ -46,9 +46,9 @@
 
 ## ⑥ 双归档
 
-1. **原始层**：把「问 ＋ 答」写进 `问答知识库/YYYYMMDD-<slug>.md`（模板见 [archiving.md](archiving.md)）。
-2. **提炼层**：从问答中**提炼知识点**，写进 `wiki/<章>/<知识点>/index.md`（3 板块，模板见 [answer-template.md](answer-template.md)）。
-3. 生成的公式 / 图 → 该知识点 `img/`；截图在 `raw/`。
-4. 问答记录 ⇄ 知识点页 **双向链接**。
+1. **原始层（问答知识库）**：把「问 ＋ 答」（3 板块）写进 `问答知识库/YYYYMMDD-<slug>.md`（模板见 [answer-template.md](answer-template.md)），并在 `问答知识库/index.md` 登记一行。
+2. **提炼层（wiki）**：从问答中**提炼纯概念 / 定义**，写进 `wiki/<章>/<概念>/index.md`（**只放定义**，无问题、无情景；模板见 [concept-template.md](concept-template.md)）。
+3. 生成的公式 / 图 → 该概念 `img/`；截图在 `raw/`。
+4. 问答记录 ⇄ 概念页 **双向链接**。
 5. `log.md` 追加一行。
 6. 答不上或存疑 → `wiki/02-缺口账本.md`（轻量）。
