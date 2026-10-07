@@ -5,7 +5,7 @@ description: 提问式答疑技能（QuestionSkill）。当用户在看书/读�
 
 # question-skill — 从「疑问」到「有据可查的答案」
 
-> 核心链路：**你提问 → 标出处 → 我检索佐证 → 用物理/力学把概念讲清 → 归类归档**。
+> 核心链路：**你提问 → 标出处 → 检索佐证 → 用物理/力学讲清 → 双归档（问答库 ＋ wiki）**。
 > 前置场景：你正在**看书、获取概念**，需要**理解我输出的知识**。答案不散落在对话里，而是沉淀成可回查的 Wiki。
 
 ## 相关 skill 分工（不要重复造）
@@ -47,7 +47,7 @@ description: 提问式答疑技能（QuestionSkill）。当用户在看书/读�
 | ③ **检索** | 调**乐享**（关键词＋语义）；必要时查本地教材 | 候选材料 |
 | ④ **佐证** | **截图 ↔ 乐享 ↔ 教材**三方交叉；标出处；冲突标注；无果降级 | 证据链 |
 | ⑤ **作答** | **3 板块：① 问题 → ② 概念（答小问） → ③ 物理情景（力学/计算机）**；穿插公式图 | 解答 |
-| ⑥ **归类** | 写进 `wiki/<章>/<知识点>/index.md` 的 `Q<n>`；`log.md`；双向链接 | 沉淀 |
+| ⑥ **双归档** | 原始「问+答」→ `问答知识库/`；提炼知识点 → `wiki/<章>/<知识点>/`；双向链接 | 沉淀 |
 
 > 详细步骤见 [references/workflow.md](references/workflow.md)。
 
@@ -63,7 +63,8 @@ description: 提问式答疑技能（QuestionSkill）。当用户在看书/读�
 | 书目导航 | `index.md` 下半（章 → 知识点） |
 | 书籍 / 乐享下载 | `library/books/` ／ `library/lexiang/<来源库>/` |
 | 截图（原图＋文字层） | `raw/` |
-| 答疑单元 | `wiki/<章>/<知识点>/index.md` |
+| **问答记录（原始层）** | `问答知识库/YYYYMMDD-<slug>.md` |
+| 知识点页（提炼层） | `wiki/<章>/<知识点>/index.md` |
 | 生成的公式 / 函数图 | `wiki/<章>/<知识点>/img/` |
 | **符号表（★ 永久保留）** | `wiki/符号表.md` |
 | 存疑清单（轻量） | `wiki/02-缺口账本.md` |
@@ -81,7 +82,7 @@ description: 提问式答疑技能（QuestionSkill）。当用户在看书/读�
 | 不检索直接答（幻觉） | [ ] 乐享已检索且有出处 |
 | 不标出处 | [ ] 截图 / 乐享 / 教材出处齐全 |
 | **只讲纯概念、没有物理/力学情境** | [ ] 已有具体可算的情境（优先力学/计算机） |
-| 不归类 | [ ] 已挂到 `wiki/<章>/<知识点>/` + 双向链接 |
+| 不双归档 | [ ] 问答记录 + 知识点页 都写好，且双向链接 |
 | 一次答多问 | [ ] 一问一单元 |
 | 截图公式不复现 | [ ] 公式已渲染 PNG 校验 |
 | 覆盖旧版不记 log | [ ] `log.md` 已追加 |
@@ -101,5 +102,5 @@ description: 提问式答疑技能（QuestionSkill）。当用户在看书/读�
 | [references/grounding.md](references/grounding.md) | 物理佐证规范（力学/计算机优先） |
 | [references/answer-template.md](references/answer-template.md) | 回答卡片模板 |
 | [references/citation.md](references/citation.md) | 乐享检索 + 出处 + 冲突 + 降级 + 下载归档 |
-| [references/archiving.md](references/archiving.md) | 3 点 + 书目导航 + 文件分类 |
+| [references/archiving.md](references/archiving.md) | 两层归档 + 3 点 + 书目导航 + 文件分类 |
 | [references/screenshot.md](references/screenshot.md) | 截图归档（放 raw/，原图＋文字层） |
