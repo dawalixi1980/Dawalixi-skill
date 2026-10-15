@@ -1,0 +1,11 @@
+﻿# 运行产物
+__pycache__/
+*.pyc
+tests/__pycache__/
+*.acc.log
+*.acc.err
+*.acc.txt
+*.scr
+*.out
+# 临时出图产物(样例目录里的 PNG/TXT 是刻意保留的交付样例)
+/~$*
