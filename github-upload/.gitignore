@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+tests/__pycache__/
+# 临时/日志产物
+*.log
+*.tmp
+/~$*
